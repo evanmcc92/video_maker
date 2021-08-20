@@ -1,0 +1,24 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    concurrent-ruby (1.1.9)
+    multi_json (1.15.0)
+    optparse (0.1.1)
+    rmagick (4.2.2)
+    streamio-ffmpeg (3.0.2)
+      multi_json (~> 1.8)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  concurrent-ruby (~> 1.1, >= 1.1.9)
+  optparse
+  rmagick (~> 4.2, >= 4.2.2)
+  streamio-ffmpeg (= 3.0.2)
+
+RUBY VERSION
+   ruby 2.7.4p191
+
+BUNDLED WITH
+   2.1.4
