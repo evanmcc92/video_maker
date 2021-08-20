@@ -9,3 +9,4 @@ gem 'concurrent-ruby', '~> 1.1', '>= 1.1.9'
 gem 'optparse'
 gem 'rmagick', '~> 4.2', '>= 4.2.2'
 gem 'streamio-ffmpeg', '3.0.2'
+gem 'rubocop', require: false
