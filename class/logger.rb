@@ -8,13 +8,17 @@ class TimeLogger
     @start_time = Time.now.to_i
   end
 
-  def print_time_ellapsed(log_extensions = null)
+  def print_time_ellapsed(log_extensions = nil)
     end_time = Time.now.to_i
     time_ellapsed = end_time - @start_time
 
-    log = log_extensions
-    log = log.join('::') if log.is_a?(Array)
+    log = ""
+    if !log_extensions.nil? && !log_extensions.empty?
+      log = log_extensions
+      log = log.join('::') if log.is_a?(Array)
+      log += ': '
+    end
 
-    puts format('%<log>s: took %<time_ellapsed>d seconds', log: log, time_ellapsed: time_ellapsed)
+    puts format('%<log>stook %<time_ellapsed>d seconds', log: log, time_ellapsed: time_ellapsed)
   end
 end
