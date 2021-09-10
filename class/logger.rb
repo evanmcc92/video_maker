@@ -15,6 +15,6 @@ class TimeLogger
     log = log_extensions
     log = log.join('::') if log.is_a?(Array)
 
-    puts format('%s: took %d seconds', log, time_ellapsed)
+    puts format('%<log>s: took %<time_ellapsed>d seconds', log: log, time_ellapsed: time_ellapsed)
   end
 end
