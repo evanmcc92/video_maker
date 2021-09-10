@@ -12,7 +12,7 @@ class TimeLogger
     end_time = Time.now.to_i
     time_ellapsed = end_time - @start_time
 
-    log = ""
+    log = ''
     if !log_extensions.nil? && !log_extensions.empty?
       log = log_extensions
       log = log.join('::') if log.is_a?(Array)
