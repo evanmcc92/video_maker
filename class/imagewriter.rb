@@ -11,7 +11,7 @@ class ImageWriter
     @direction = options[:direction]
     @color = 'black'
     @image_directory = './images/'
-    @gif_file_name = format('%sgif.gif', @image_directory)
+    @gif_file_name = format('%<dir>sgif.gif', dir: @image_directory)
     @time_logger = time_logger
 
     @direction_options = {
@@ -30,7 +30,8 @@ class ImageWriter
     elsif @direction == @direction_options[:up]
       _make_images_count_up
     else
-      throw format('Invalid direction. Allowed options: %s', @direction_options.values.join(', '))
+      direction_options = @direction_options.values.join(', ')
+      throw format('Invalid direction. Allowed options: %<options>s', options: direction_options)
     end
 
     @time_logger.printTimeEllapsed('image')
@@ -80,26 +81,33 @@ class ImageWriter
   def _make_minute_down(time1, time2)
     diff = time2 - time1
     current_time = _seconds_to_hms(diff)
-    _make_image(current_time, @color)
+    _make_image_and_gif(current_time)
   end
 
   def _make_minute_up(second)
     current_time = _seconds_to_hms(second)
-    _make_image(current_time, @color)
+    _make_image_and_gif(current_time)
   end
 
-  def _make_image(timestamp, background_color, delay = 100)
+  def _make_image_and_gif(timestamp, delay = 100)
+    file_name = format('%<dir>simage-%<timestamp>s.png', dir: @image_directory, timestamp: timestamp)
+    _make_image(file_name, timestamp)
+    _add_to_gif(file_name, delay, timestamp)
+    puts format('[%<timestamp>s] end', timestamp: timestamp)
+  end
+
+  def _make_image(file_name, timestamp)
     puts format('[%s] start', timestamp)
-    file_name = format('%simage-%s.png', @image_directory, timestamp)
-    canvas = Magick::Image.new(1920, 1080) { self.background_color = background_color }
+    canvas = Magick::Image.new(1920, 1080) { self.background_color = @color }
     gc.draw(_draw_image(timestamp))
     canvas.write(file_name)
-    puts format('[%s] image created', timestamp)
+    puts format('[%<timestamp>s] image created', timestamp: timestamp)
+  end
 
+  def _add_to_gif(file_name, delay, timestamp)
     @gif.read(file_name)
     @gif.delay = delay
-    puts format('[%s] added to gif', timestamp)
-    puts format('[%s] end', timestamp)
+    puts format('[%<timestamp>s] added to gif', timestamp: timestamp)
   end
 
   def _draw_image(timestamp)
@@ -117,6 +125,6 @@ class ImageWriter
 
   def _seconds_to_hms(sec)
     # https://stackoverflow.com/a/28909294
-    format('%02d:%02d:%02d', sec / 3600, sec / 60 % 60, sec % 60)
+    format('%<hour>02d:%<min>02d:%<sec>02d', hour: sec / 3600, min: sec / 60 % 60, sec: sec % 60)
   end
 end
